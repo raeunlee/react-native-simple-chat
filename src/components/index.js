@@ -1,2 +1,5 @@
 import Image from './Image';
-export { Image };
+import Input from './Input';
+import Button from './Button';
+
+export { Input, Image, Button };

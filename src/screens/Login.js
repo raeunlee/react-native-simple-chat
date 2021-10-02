@@ -6,6 +6,8 @@ import { images } from '../utils/images';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, removeWhitespace } from '../utils/common';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+//파이어베이스 로그인
 import { Alert } from 'react-native';
 import { login } from '../utils/firebase';
 
@@ -28,18 +30,22 @@ const ErrorText = styled.Text`
 `;
 
 //useRef -> Input 컴포넌트에서 next 누를시 포커스가 이동됨 -> PasswordRef
-//dispatch spinner->진행중인 표시
+//spinner->진행중인 표시
 //useSafeAreaInsets -> 아이폰 노치디자인에 헤더 잘리는 것 보안해준다고함
 
 const Login = ({ navigation }) => {
   const { dispatch } = useContext(UserContext);
+
   const { spinner } = useContext(ProgressContext);
+
   const insets = useSafeAreaInsets();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const passwordRef = useRef();
+
   const [errorMessage, setErrorMessage] = useState('');
+
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -65,13 +71,14 @@ const Login = ({ navigation }) => {
     try {
       spinner.start();
       const user = await login({ email, password });
+      Alert.alert('로그인 성공', user.email);
       dispatch(user);
     } 
     catch (e) {
-      Alert.alert('Login Error', e.message);
+      Alert.alert('로그인 살패', e.message);
     } 
     finally {
-      spinner.stop();
+      spinner.stop()
     }
   };
 
